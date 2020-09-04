@@ -127,6 +127,8 @@ function init() {
   document.addEventListener( 'touchmove', onDocumentTouchMove, false );
   document.addEventListener( 'keydown', onKeyDown, false );
   window.addEventListener( 'resize', onWindowResize, false );
+  // Fire one immediately
+  onWindowResize();
 
   // Schedule orbit regeneration
   setInterval(updateOrbit, 7000);
@@ -305,9 +307,38 @@ function onDocumentTouchMove( event ) {
 function onWindowResize( event ) {
   windowHalfX = window.innerWidth / 2;
   windowHalfY = window.innerHeight / 2;
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  // camera.aspect = window.innerWidth / window.innerHeight;
+  // camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
+
+  setCanvasDpi(renderer, window.innerWidth, window.innerHeight);
+  // camera.setViewOffset(window.innerWidth, window.innerHeight, 0, 0, window.innerWidth, window.innerHeight)
+}
+
+/**
+ * 
+ * @param {HTMLCanvasElement} canvas 
+ * @param {number} width 
+ * @param {number} height 
+ */
+function setCanvasDpi(renderer, width, height, camera) {
+  var canvas = renderer.getContext().canvas
+  var ctx = canvas.getContext('experimental-webgl');
+  console.log(ctx);
+
+  // Set display size (css pixels).
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+
+  // Set actual size in memory (scaled to account for extra pixel density).
+  var scale = window.devicePixelRatio || 1; // Change to 1 on retina screens to see blurry canvas.
+  canvas.width = Math.floor(width * scale);
+  canvas.height = Math.floor(height * scale);
+
+  renderer.setPixelRatio(scale);
+
+  // Normalize coordinate system to use css pixels.
+  // ctx.scale(scale, scale);
 }
 
 function onKeyDown(event){
