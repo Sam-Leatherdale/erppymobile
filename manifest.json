@@ -3,12 +3,13 @@
     "short_name": "Erppy Mobile",
     "icons": [
         {
-            "src": "/icons/android-chrome-192x192.png?v=1",
+            "src": "android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         }
     ],
+    "start_url": "/erppymobile",
     "theme_color": "#000000",
     "background_color": "#000000",
-    "display": "fullscreen"
+    "display": "standalone"
 }
